@@ -1,5 +1,7 @@
 package com.gestion.g04.security;
 
+import com.gestion.g04.security.services.UserDetailServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -21,10 +23,14 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @EnableWebSecurity
 @Configuration
+@AllArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
+
     PasswordEncoder passwordEncoder;
+
+
+    private UserDetailServiceImpl userDetailServiceImpl;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -38,6 +44,7 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests((requests) -> requests.requestMatchers("/productsList").hasAnyAuthority("ROLE_ADMIN", "ROLE_CASHIER", "ROLE_USER"));
         httpSecurity.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
         httpSecurity.exceptionHandling().accessDeniedPage("/accessDenied");
+        httpSecurity.userDetailsService(userDetailServiceImpl);
         return httpSecurity.build();
     }
 
