@@ -42,7 +42,7 @@ public class G04Application {
     }
 
 
-    @Bean
+    //@Bean
     CommandLineRunner commandLineRunnerUser(AccountService accountService) {
 
 

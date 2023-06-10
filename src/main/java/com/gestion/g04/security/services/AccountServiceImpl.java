@@ -4,10 +4,11 @@ import com.gestion.g04.security.entities.Role;
 import com.gestion.g04.security.entities.User;
 import com.gestion.g04.security.repositories.RoleRepository;
 import com.gestion.g04.security.repositories.UserRepository;
-import jakarta.transaction.Transactional;
+
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -87,8 +88,6 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public User loadUserByUsername(String username) {
-
-
 
         return userRepository.findByUsername(username);
     }

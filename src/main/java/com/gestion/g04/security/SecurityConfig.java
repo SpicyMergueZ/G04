@@ -29,34 +29,33 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-
+        httpSecurity.csrf(csrf -> csrf.disable());
         httpSecurity.formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll();
-        httpSecurity.authorizeRequests().requestMatchers("/webjars/**").permitAll();
+        httpSecurity.authorizeHttpRequests((requests) -> requests.requestMatchers("/webjars/**").permitAll());
 
-        httpSecurity.authorizeRequests((requests)-> requests.requestMatchers("/createProduct","/saveProduct").hasAnyAuthority("ROLE_ADMIN","ROLE_CASHIER"));
-        httpSecurity.authorizeRequests((requests)-> requests.requestMatchers("/showProduct","/updateProduct","/deleteProduct").hasAnyAuthority("ROLE_ADMIN"));
-        httpSecurity.authorizeRequests((requests)-> requests.requestMatchers("/productsList").hasAnyAuthority("ROLE_ADMIN","ROLE_CASHIER", "ROLE_USER"));
-        httpSecurity.authorizeRequests(authorize -> authorize.anyRequest().authenticated());
+        httpSecurity.authorizeHttpRequests((requests) -> requests.requestMatchers("/createProduct", "/saveProduct").hasAnyAuthority("ROLE_ADMIN", "ROLE_CASHIER"));
+        httpSecurity.authorizeHttpRequests((requests) -> requests.requestMatchers("/showProduct", "/updateProduct", "/deleteProduct").hasAnyAuthority("ROLE_ADMIN"));
+        httpSecurity.authorizeHttpRequests((requests) -> requests.requestMatchers("/productsList").hasAnyAuthority("ROLE_ADMIN", "ROLE_CASHIER", "ROLE_USER"));
+        httpSecurity.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
         httpSecurity.exceptionHandling().accessDeniedPage("/accessDenied");
         return httpSecurity.build();
     }
 
     //@Bean
-    public InMemoryUserDetailsManager inMemoryUserDetailsManager(){
+    public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
         return new InMemoryUserDetailsManager(
-                User.withUsername("admin").password(passwordEncoder.encode("123")).roles("ADMIN","USER").build(),
+                User.withUsername("admin").password(passwordEncoder.encode("123")).roles("ADMIN", "USER").build(),
                 User.withUsername("cashier").password(passwordEncoder.encode("123")).roles("CASHIER").build(),
                 User.withUsername("accountant").password(passwordEncoder.encode("123")).roles("USER").build()
 
         );
     }
 
-    @Bean
-    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource){
+    //@Bean
+    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
 
         return new JdbcUserDetailsManager(dataSource);
     }
-
 
 
 }
