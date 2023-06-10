@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="Template.html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Creation</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <main class="container mt-5">
+        <form th:action="@{updateProduct}" method="post">
+            <div>
+                <!--on peut ajouter un parametre au id : hidden -->
+                <label hidden for="idProduct">Product Id : </label>
+                <input hidden type="text" id="idProduct" name="idProduct"
+                       th:value="${productJsp.idProduct}">
+            </div>
+            <div>
+                <label for="nameProduct">Product Name : </label>
+                <input type="text" id="nameProduct" name="nameProduct"
+                       th:value="${productJsp.nameProduct}">
+            </div>
+            <div>
+                <label for="priceProduct">Price : </label>
+                <input type="text" id="priceProduct" name="priceProduct"
+                       th:value="${productJsp.priceProduct}">
+            </div>
+            <div>
+                <label for="dateCreate">Creation Date : </label>
+                <input type="date" id="dateCreate" name="dateCreate"
+                       th:value="${productJsp.dateCreate}">
+            </div>
+            <div>
+                <input type="submit" value="update" th:action="updateProduct">
+            </div>
+        </form>
+    </main>
+</div>
+</body>
+</html>

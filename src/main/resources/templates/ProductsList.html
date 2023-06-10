@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="Template.html">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="webjars/bootstrap/5.2.0/css/bootstrap.min.css"/>
+    <title>Products List</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <main class="container mt-5">
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Product</th>
+                <th scope="col">Price</th>
+                <th scope="col">Date</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="product:${productsJsp.content}">
+                <td th:text="${product.idProduct}"></td>
+                <td th:text="${product.nameProduct}"></td>
+                <td th:text="${product.priceProduct}"></td>
+                <td th:text="${product.dateCreate}"></td>
+                <td th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">
+                    <a Onclick="return confirm('Are you sure to delete this item?')"
+                       th:href="@{deleteProduct(id=${product.idProduct},
+                       page=${currentPage},
+                       size=${size}
+                       )}">Delete</a>
+                </td>
+                <td th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">
+                    <a th:href="@{showProduct(id=${product.idProduct})}">Edit</a>
+                </td>
+                <td>
+                    <a th:href="@{hello}">Hello</a>
+                </td>
+
+            </tr>
+            </tbody>
+
+        </table>
+        <ul class="nav nav-pills">
+            <li th:each="page,status:${pages}">
+                <a th:class="${status.index==currentPage?'btn btn-primary':'btn'}"
+                   th:href="@{productsList(page=${status.index}, size =${size})}"
+                   th:text="${status.index}"></a>
+            </li>
+        </ul>
+    </main>
+</div>
+</body>
+</html>
